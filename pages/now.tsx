@@ -1,5 +1,6 @@
 import Button from "@/components/button";
 import Card from "@/components/card";
+import { CardsSkeleton,CardSkeleton } from "@/components/skeletons";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
@@ -32,13 +33,9 @@ export default function Now() {
     // console.log("error:" + error);
     // console.log("isLoading:" + isLoading);
 
-    if(error) {
-        return <p>error occurred</p>
-    }
-
-    if(isLoading) {
-        return <p>loading...</p>
-    }
+    // if(error) {
+    //     return <p>error occurred</p>
+    // }
 
     return (
         <div>
@@ -49,11 +46,12 @@ export default function Now() {
                     </div>
                     <div className="min-h-screen flex flex-col items-center justify-center">
                         <h1 className="text-6xl text-center font-bold pb-24 text-gray-700">What's it like outside?</h1>
-                        {weatherData && <div className="w-[60%] flex flex-row gap-4">
-                            {
+                        <div className="w-[60%] flex flex-row gap-4">
+                            {isLoading && <CardsSkeleton />}
+                            {weatherData &&
                                 weatherData.items.map(data => <Card weatherData={data} additionalClassNames="flex-1" />)
                             }
-                        </div>}
+                        </div>
                     </div>
                 </div>
             </main>
