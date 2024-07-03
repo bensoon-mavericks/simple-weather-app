@@ -5,6 +5,8 @@ name: master
 
 on:
   push:
+    branches:
+      - master
 # challenge : i want to make sure that only when master branch committed, then it runs
 
 jobs:

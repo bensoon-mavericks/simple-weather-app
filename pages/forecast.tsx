@@ -24,6 +24,7 @@ const onErrorRetry = (error, key, config, revalidate, { retryCount }) => {
     setTimeout(() => revalidate({ retryCount }), 2000)
 };
 
+// TODO: change date string to weekday
 export default function Forecast() {
     const router = useRouter()
     const { data: weatherData, error, isLoading } = useSWR('/api/forecast', fetcher, { onErrorRetry })
