@@ -6,7 +6,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    // Reminder: you can fetch the forecast data at https://birdsofaweather.netlify.app/api/weather/forecast
     const fetchResponse = await fetch(
       "https://birdsofaweather.netlify.app/api/weather/forecast"
     );

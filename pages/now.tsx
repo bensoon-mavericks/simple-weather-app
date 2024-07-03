@@ -8,6 +8,9 @@ import useSWR from "swr";
 // TODO: find better way of refreshing the data
 // currently not consistent
 // enter the page then it makes the call again currently, but should it do that
+export class WeatherData {
+    public constructor(public area: string, public forecast: string) {}
+}
 
 const fetcher = (url) => fetch(url).then(async res => {
     console.log(res);
@@ -27,6 +30,7 @@ const onErrorRetry = (error, key, config, revalidate, { retryCount }) => {
 export default function Now() {
     const router = useRouter()
     const { data: weatherData, error, isLoading } = useSWR('/api/now', fetcher, { onErrorRetry })
+    console.log(weatherData)
 
     return (
         <div>
@@ -40,7 +44,7 @@ export default function Now() {
                         <div className="w-[60%] flex flex-row gap-4">
                             {(error || isLoading) && <CardsSkeleton />}
                             {weatherData &&
-                                weatherData.items.map(data => <Card weatherData={data} additionalClassNames="flex-1" />)
+                                weatherData.items.map(data => <Card data={new WeatherData(data.area, data.forecast)} additionalClassNames="flex-1" />)
                             }
                         </div>
                     </div>
