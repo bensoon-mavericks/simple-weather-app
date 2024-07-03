@@ -5,11 +5,9 @@ import { useRouter } from "next/router";
 import { useEffect, useState, Suspense, Component } from "react";
 import useSWR from "swr";
 
-// TODO: find better way of refreshing the data
-// currently not consistent
-// enter the page then it makes the call again currently, but should it do that
-export class WeatherData {
-    public constructor(public area: string, public forecast: string) {}
+export class ForecastData {
+    public constructor(public date: string, public prediction: string) {}
+
 }
 
 const fetcher = (url) => fetch(url).then(async res => {
@@ -26,12 +24,10 @@ const onErrorRetry = (error, key, config, revalidate, { retryCount }) => {
     setTimeout(() => revalidate({ retryCount }), 2000)
 };
 
-
-export default function Now() {
+export default function Forecast() {
     const router = useRouter()
-    const { data: weatherData, error, isLoading } = useSWR('/api/now', fetcher, { onErrorRetry })
+    const { data: weatherData, error, isLoading } = useSWR('/api/forecast', fetcher, { onErrorRetry })
     console.log(weatherData)
-
     return (
         <div>
             <main>
@@ -40,11 +36,11 @@ export default function Now() {
                         <Button title="back" onClick={() => router.push("/")}></Button>
                     </div>
                     <div className="min-h-screen flex flex-col items-center justify-center">
-                        <h1 className="text-6xl text-center font-bold pb-24 text-gray-700">What's it like outside?</h1>
+                        <h1 className="text-6xl text-center font-bold pb-24 text-gray-700">Predictions for the next 4 days</h1>
                         <div className="w-[60%] flex flex-row gap-4">
                             {(error || isLoading) && <CardsSkeleton />}
                             {weatherData &&
-                                weatherData.items.map(data => <Card data={new WeatherData(data.area, data.forecast)} additionalClassNames="flex-1" />)
+                                weatherData.items.map(data => <Card data={new ForecastData(data.date, data.prediction)} additionalClassNames="flex-1" />)
                             }
                         </div>
                     </div>
