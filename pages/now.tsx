@@ -5,10 +5,9 @@ import { useRouter } from "next/router";
 import { useEffect, useState, Suspense, Component } from "react";
 import useSWR from "swr";
 
-export interface WeatherData {
-    area: string,
-    forecast: string
-}
+// TODO: find better way of refreshing the data
+// currently not consistent
+// enter the page then it makes the call again currently, but should it do that
 
 const fetcher = (url) => fetch(url).then(async res => {
     console.log(res);
@@ -28,14 +27,6 @@ const onErrorRetry = (error, key, config, revalidate, { retryCount }) => {
 export default function Now() {
     const router = useRouter()
     const { data: weatherData, error, isLoading } = useSWR('/api/now', fetcher, { onErrorRetry })
-    // console.log("data:");
-    // console.log(weatherData);
-    // console.log("error:" + error);
-    // console.log("isLoading:" + isLoading);
-
-    // if(error) {
-    //     return <p>error occurred</p>
-    // }
 
     return (
         <div>
