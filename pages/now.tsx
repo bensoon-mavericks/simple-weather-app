@@ -2,7 +2,7 @@ import Button from "@/components/button";
 import Card from "@/components/card";
 import { CardsSkeleton,CardSkeleton } from "@/components/skeletons";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense, Component } from "react";
 import useSWR from "swr";
 
 export interface WeatherData {
@@ -47,7 +47,7 @@ export default function Now() {
                     <div className="min-h-screen flex flex-col items-center justify-center">
                         <h1 className="text-6xl text-center font-bold pb-24 text-gray-700">What's it like outside?</h1>
                         <div className="w-[60%] flex flex-row gap-4">
-                            {isLoading && <CardsSkeleton />}
+                            {(error || isLoading) && <CardsSkeleton />}
                             {weatherData &&
                                 weatherData.items.map(data => <Card weatherData={data} additionalClassNames="flex-1" />)
                             }
