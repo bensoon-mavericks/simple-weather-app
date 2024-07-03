@@ -18,10 +18,15 @@ const fetcher = (url) => fetch(url).then(async res => {
     return res.json()
 })
 
+const onErrorRetry = (error, key, config, revalidate, { retryCount }) => {
+    // Retry after 2 seconds.
+    setTimeout(() => revalidate({ retryCount }), 2000)
+};
+
 
 export default function Now() {
     const router = useRouter()
-    const { data: weatherData, error, isLoading } = useSWR('/api/now', fetcher)
+    const { data: weatherData, error, isLoading } = useSWR('/api/now', fetcher, { onErrorRetry })
     // console.log("data:");
     // console.log(weatherData);
     // console.log("error:" + error);
