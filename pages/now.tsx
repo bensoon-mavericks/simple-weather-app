@@ -2,24 +2,38 @@ import Button from "@/components/button";
 import Card from "@/components/card";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import useSWR from "swr";
 
 export interface WeatherData {
     area: string,
     forecast: string
 }
 
+const fetcher = (url) => fetch(url).then(async res => {
+    console.log(res);
+    if (!res.ok) {
+        const error = new Error('An error occurred while fetching the data.', {cause: await res.json()})
+        throw error
+    }
+    return res.json()
+})
+
+
 export default function Now() {
     const router = useRouter()
-    const [weatherData, setWeatherData] = useState<WeatherData[]>([])
+    const { data: weatherData, error, isLoading } = useSWR('/api/now', fetcher)
+    // console.log("data:");
+    // console.log(weatherData);
+    // console.log("error:" + error);
+    // console.log("isLoading:" + isLoading);
 
-    useEffect(() => {
-        const getWeatherData = async () => {
-            const fetchResponse = await fetch("/api/now");
-            const responseJson = await fetchResponse.json()
-            setWeatherData(responseJson.items)
-        }
-        getWeatherData()
-    }, [])
+    if(error) {
+        return <p>error occurred</p>
+    }
+
+    if(isLoading) {
+        return <p>loading...</p>
+    }
 
     return (
         <div>
@@ -30,11 +44,11 @@ export default function Now() {
                     </div>
                     <div className="min-h-screen flex flex-col items-center justify-center">
                         <h1 className="text-6xl text-center font-bold pb-24 text-gray-700">What's it like outside?</h1>
-                        <div className="w-[60%] flex flex-row gap-4">
+                        {weatherData && <div className="w-[60%] flex flex-row gap-4">
                             {
-                                weatherData.map(data => <Card weatherData={data} additionalClassNames="flex-1" />)
+                                weatherData.items.map(data => <Card weatherData={data} additionalClassNames="flex-1" />)
                             }
-                        </div>
+                        </div>}
                     </div>
                 </div>
             </main>
