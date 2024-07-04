@@ -67,6 +67,7 @@ jobs:
           echo 'COPY . .' >> Dockerfile
           echo 'RUN npm install' >> Dockerfile
           echo 'RUN npm run build' >> Dockerfile
+          echo 'EXPOSE 3000' >> Dockerfile
           echo 'CMD ["npm", "start"]' >> Dockerfile
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
