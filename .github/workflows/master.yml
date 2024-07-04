@@ -18,20 +18,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 14.x
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
     # - challenge: do things that you think is necessary
 
-  deploy:
-    name: deploy
-    runs-on: ubuntu:latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 14.x
-      # challenge : assuming that we have an ECR called "simple-weather-app"
-      # and we have a ECS/EKS deployment called "simple-weather-app"
-      # do things that you think is necessary to create a docker image and push it to the ECR
-      # and deploy the application to the ECS / EKS (pick one)
-      # fyi : not necessary to create the dockerfile
+  # deploy:
+  #   name: deploy
+  #   runs-on: ubuntu:latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 14.x
+  # challenge : assuming that we have an ECR called "simple-weather-app"
+  # and we have a ECS/EKS deployment called "simple-weather-app"
+  # do things that you think is necessary to create a docker image and push it to the ECR
+  # and deploy the application to the ECS / EKS (pick one)
+  # fyi : not necessary to create the dockerfile
 
   # any other steps that you think is necessary?
