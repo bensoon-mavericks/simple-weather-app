@@ -4,6 +4,7 @@ import { CardsSkeleton,CardSkeleton } from "@/components/skeletons";
 import { useRouter } from "next/router";
 import { useEffect, useState, Suspense, Component } from "react";
 import useSWR from "swr";
+import { getDayOfWeek } from "@/utils/datetime";
 
 export class ForecastData {
     public constructor(public date: string, public prediction: string) {}
@@ -24,12 +25,6 @@ const onErrorRetry = (error, key, config, revalidate, { retryCount }) => {
     setTimeout(() => revalidate({ retryCount }), 2000)
 };
 
-// Accepts a Date object or date string that is recognized by the Date.parse() method
-function getDayOfWeek(date) {
-    const dayOfWeek = new Date(date).getDay();    
-    return isNaN(dayOfWeek) ? null : 
-      ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
-  }
 
 // TODO: change date string to weekday
 export default function Forecast() {
