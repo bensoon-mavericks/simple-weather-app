@@ -24,6 +24,13 @@ const onErrorRetry = (error, key, config, revalidate, { retryCount }) => {
     setTimeout(() => revalidate({ retryCount }), 2000)
 };
 
+// Accepts a Date object or date string that is recognized by the Date.parse() method
+function getDayOfWeek(date) {
+    const dayOfWeek = new Date(date).getDay();    
+    return isNaN(dayOfWeek) ? null : 
+      ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
+  }
+
 // TODO: change date string to weekday
 export default function Forecast() {
     const router = useRouter()
@@ -41,7 +48,7 @@ export default function Forecast() {
                         <div className="w-[60%] flex flex-row gap-4">
                             {(error || isLoading) && <CardsSkeleton />}
                             {weatherData &&
-                                weatherData.items.map(data => <Card data={new ForecastData(data.date, data.prediction)} additionalClassNames="flex-1" />)
+                                weatherData.items.map(data => <Card data={new ForecastData(getDayOfWeek(data.date), data.prediction)} additionalClassNames="flex-1" />)
                             }
                         </div>
                     </div>
