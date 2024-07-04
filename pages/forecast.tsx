@@ -4,6 +4,7 @@ import { CardsSkeleton,CardSkeleton } from "@/components/skeletons";
 import { useRouter } from "next/router";
 import { useEffect, useState, Suspense, Component } from "react";
 import useSWR from "swr";
+import { getDayOfWeek } from "@/utils/datetime";
 
 export class ForecastData {
     public constructor(public date: string, public prediction: string) {}
@@ -24,6 +25,7 @@ const onErrorRetry = (error, key, config, revalidate, { retryCount }) => {
     setTimeout(() => revalidate({ retryCount }), 2000)
 };
 
+
 // TODO: change date string to weekday
 export default function Forecast() {
     const router = useRouter()
@@ -41,7 +43,7 @@ export default function Forecast() {
                         <div className="w-[60%] flex flex-row gap-4">
                             {(error || isLoading) && <CardsSkeleton />}
                             {weatherData &&
-                                weatherData.items.map(data => <Card data={new ForecastData(data.date, data.prediction)} additionalClassNames="flex-1" />)
+                                weatherData.items.map(data => <Card data={new ForecastData(getDayOfWeek(data.date), data.prediction)} additionalClassNames="flex-1" />)
                             }
                         </div>
                     </div>
