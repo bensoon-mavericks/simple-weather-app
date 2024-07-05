@@ -3,7 +3,7 @@ import Card from "@/components/card";
 import { CardsSkeleton,CardSkeleton } from "@/components/skeletons";
 import { useRouter } from "next/router";
 import { useEffect, useState, Suspense, Component } from "react";
-import useSWR from "swr";
+import useSWR, { preload } from "swr";
 
 // TODO: find better way of refreshing the data
 // currently not consistent
@@ -21,16 +21,22 @@ const fetcher = (url) => fetch(url).then(async res => {
     return res.json()
 })
 
+preload('/api/user', fetcher)
+
 const onErrorRetry = (error, key, config, revalidate, { retryCount }) => {
     // Retry after 2 seconds.
     setTimeout(() => revalidate({ retryCount }), 2000)
 };
 
-
 export default function Now() {
     const router = useRouter()
-    const { data: weatherData, error, isLoading } = useSWR('/api/now', fetcher, { onErrorRetry })
-    console.log(weatherData)
+    const { data: weatherData, error, isLoading } = useSWR('/api/now', fetcher, { 
+        onErrorRetry,
+        dedupingInterval: 600000,
+        refreshInterval: 600000,
+        revalidateOnFocus: false,
+        revalidateIfStale: false, // Do not revalidate if the data is stale
+    })
 
     return (
         <div>
@@ -44,7 +50,9 @@ export default function Now() {
                         <div className="w-[60%] flex flex-row gap-4">
                             {(error || isLoading) && <CardsSkeleton />}
                             {weatherData &&
-                                weatherData.items.map(data => <Card data={new WeatherData(data.area, data.forecast)} additionalClassNames="flex-1" />)
+                                weatherData.items.map(data => 
+                                <Card key={data.area} data={new WeatherData(data.area, data.forecast)} additionalClassNames="flex-1" />
+                            )
                             }
                         </div>
                     </div>
