@@ -14,8 +14,8 @@ export default function Home() {
                     <div className="min-h-screen flex flex-col items-center justify-center">
                         <h1 className="text-6xl text-center font-bold pb-24 text-gray-700">Simple Weather App</h1>
                         <div className="w-[50%] flex flex-row gap-24">
-                            <Button title="Now" onClick={() => router.push("/now")} />
-                            <Button title="Forecast" onClick={() => { router.push("/forecast")}} />
+                            <Button data-testid="now-button" title="Now" onClick={() => router.push("/now")} />
+                            <Button data-testid="forecastButton" title="Forecast" onClick={() => { router.push("/forecast")}} />
                         </div>
                     </div>
                 </div>
