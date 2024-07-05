@@ -70,9 +70,10 @@ When we use SWR to handle our client requests, it has a cache to store the data 
 ## Workflows
 
 For the github workflows, I've made the following changes:
-1) triggered whenever master branch is updated
+1) triggered whenever master branch is updated.
 2) declared two jobs "test" and "deploy", of which "deploy" will only run if "test" is successful.
-3) build and push an image to ECR, and then deploy that image onto ECS
+3) "test" job will run tests and build the project.
+4) "deploy" job will build and push an image to ECR, and then deploy that image onto ECS.
 
 ![Screenshot 2024-07-05 at 1 50 21 PM](https://github.com/bensoon-mavericks/simple-weather-app/assets/171893210/6b2d7031-eb30-484a-b6bd-1aba29f04966)
 
