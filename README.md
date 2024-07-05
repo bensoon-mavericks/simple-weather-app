@@ -13,6 +13,14 @@ Visit the localhost domain displayed in the console e.g. `http://localhost:3000`
 
 ---
 
+## Testing
+
+- `npm run test`
+
+You can run this command to run the tests. Currently there is only the test for the Home page, but more tests should be covered for the other components as well.
+
+___
+
 ## Tasks
 
 ### 1. Something is wrong with the "Now" page and there have been user reports that the weather information does not appear. Investigate and rectify the problem.
@@ -77,3 +85,10 @@ For the github workflows, I've made the following changes:
 
 ![Screenshot 2024-07-05 at 1 50 21 PM](https://github.com/bensoon-mavericks/simple-weather-app/assets/171893210/6b2d7031-eb30-484a-b6bd-1aba29f04966)
 
+
+## Future improvements
+1) More unit tests to be written for the other components as well.
+2) Utilise library like Cypress for E2E testing.
+3) Finer tuning of fetching of data and storing inside of SWR cache. 
+4) Should add a linter to the workflow
+5) Styling can be further improved, e.g. different backgrounds for the weather data, rain for rainy days, sunshine for sunny days, etc.
