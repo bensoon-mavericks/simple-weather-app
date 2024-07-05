@@ -21,7 +21,7 @@ const fetcher = (url) => fetch(url).then(async res => {
     return res.json()
 })
 
-preload('/api/user', fetcher)
+preload('/api/now', fetcher)
 
 const onErrorRetry = (error, key, config, revalidate, { retryCount }) => {
     // Retry after 2 seconds.
